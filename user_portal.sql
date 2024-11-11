@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2024 at 01:28 PM
+-- Generation Time: Nov 11, 2024 at 04:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,6 +43,30 @@ INSERT INTO `admins` (`id`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `recipient_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `timestamp`) VALUES
+(31, 1, 999, 'asd', '2024-11-11 15:06:29'),
+(32, 1, 999, 'asd', '2024-11-11 15:09:35'),
+(33, 999, 1, 'hello', '2024-11-11 15:09:44'),
+(34, 1, 999, 'baket', '2024-11-11 15:15:06');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `registration`
 --
 
@@ -64,6 +88,12 @@ ALTER TABLE `admins`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `registration`
 --
 ALTER TABLE `registration`
@@ -78,6 +108,12 @@ ALTER TABLE `registration`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `registration`

@@ -61,7 +61,7 @@ if (isset($_POST["submit"])) {
       <div class="first-block">
         <img src="../img/avatar-female.png" alt="">
         <h1>User</h1>
-        <form class="login" action="userphase.html" method="POST">
+        <form class="login" action="register-user.php" method="POST">
           <input type="email" name="email" placeholder="Email" required>
           <input type="password" name="password" placeholder="Password" required>
           <input type="password" name="password" placeholder="Comfirm password">
