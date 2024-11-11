@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/portal/user-portal.css">
+    <link rel="stylesheet" href="../css/user-portal.css">
     <title>OCC Lost and Found System</title>
 </head>
 
 <body>
     <nav class="navbar">
         <div class="left-side">
-            <img src="/img/OCC-logo.webp" alt="">
+            <img src="../img/OCC-logo.webp" alt="">
             <h1>One Cainta College</h1>
         </div>
         <div class="right-side">
@@ -21,7 +21,7 @@
     </nav>
 
     <div class="main-page">
-        <img src="/img/occ-background.webp" alt="" class="occ-background">
+        <img src="../img/occ-background.webp" alt="" class="occ-background">
 
         <div class="welcome-text">
             <h1>OCC LOST AND FOUND</h1>
@@ -31,7 +31,7 @@
 
         <div class="search-container">
             <div class="search-bar">
-                <input type="text" placeholder="Search items"><img src="/img/search-icon.png" alt="">
+                <input type="text" placeholder="Search items"><img src="../img/search-icon.png" alt="">
             </div>
             <a href="">Report a missing item?</a>
         </div>
@@ -60,7 +60,7 @@
 
                     <div class="claim-message">
                         <button>Claim</button>
-                        <img src="/img/message-icon.png" alt="" class="button-but-image">
+                        <img src="../img/message-icon.png" alt="" class="button-but-image">
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
 
                     <div class="claim-message">
                         <button>Claim</button>
-                        <img src="/img/message-icon.png" alt="" class="button-but-image">
+                        <img src="../img/message-icon.png" alt="" class="button-but-image">
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@
 
                     <div class="claim-message">
                         <button>Claim</button>
-                        <img src="/img/message-icon.png" alt="" class="button-but-image">
+                        <img src="../img/message-icon.png" alt="" class="button-but-image">
                     </div>
                 </div>
 
@@ -105,7 +105,7 @@
 
                     <div class="claim-message">
                         <button>Claim</button>
-                        <img src="/img/message-icon.png" alt="" class="button-but-image">
+                        <img src="../img/message-icon.png" alt="" class="button-but-image">
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@
 
                     <div class="claim-message">
                         <button>Claim</button>
-                        <img src="/img/message-icon.png" alt="" class="button-but-image">
+                        <img src="../img/message-icon.png" alt="" class="button-but-image">
                     </div>
                 </div>
             </div>
