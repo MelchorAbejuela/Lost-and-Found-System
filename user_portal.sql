@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2024 at 04:15 PM
+-- Generation Time: Nov 12, 2024 at 01:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,10 +59,8 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `timestamp`) VALUES
-(31, 1, 999, 'asd', '2024-11-11 15:06:29'),
-(32, 1, 999, 'asd', '2024-11-11 15:09:35'),
-(33, 999, 1, 'hello', '2024-11-11 15:09:44'),
-(34, 1, 999, 'baket', '2024-11-11 15:15:06');
+(129, 1, 999, 'hello po pede po patulong?', '2024-11-12 12:34:25'),
+(130, 999, 1, 'ano yon', '2024-11-12 12:34:28');
 
 -- --------------------------------------------------------
 
@@ -113,7 +111,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 
 --
 -- AUTO_INCREMENT for table `registration`

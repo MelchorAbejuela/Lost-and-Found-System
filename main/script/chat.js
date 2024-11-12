@@ -1,15 +1,9 @@
-// chat.js
-
 const sendBtn = document.getElementById('send-btn');
-const messageInput = document.getElementById('message-input');
+const messageInput = document.getElementById('message-input'); 
 const chatBox = document.getElementById('chat-box');
-const chatHeader = document.getElementById('chat-header');
+let lastMessageId = 0; 
 
-// Set the user/admin label on the header
-const isAdmin = false; // Set to true for admin, false for user
-chatHeader.textContent = isAdmin ? "Admin Chat" : "User Chat";
-
-// Function to append messages
+// Function to append a message to the chat
 function appendMessage(message, isUser) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message');
@@ -20,25 +14,56 @@ function appendMessage(message, isUser) {
 
     messageDiv.appendChild(messageBubble);
     chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Event listener for sending messages
-sendBtn.addEventListener('click', () => {
+// Function to send a message to the server
+function sendMessage() {
     const message = messageInput.value.trim();
     if (message) {
-        appendMessage(message, true); // true for user message
-        messageInput.value = '';
-        // Simulate Admin response (you can replace this with real-time data)
-        setTimeout(() => {
-            appendMessage("Admin's response: " + message, false); // false for admin message
-        }, 1000);
+        fetch("send-message.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `sender_id=1&recipient_id=999&message=${encodeURIComponent(message)}&role=user`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                messageInput.value = ''; // Clear input
+                fetchMessages(); // Fetch new messages to update chat
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error sending message:', error));
+    }
+}
+
+// Function to fetch new messages from the server
+function fetchMessages() {
+    fetch(`load-messages.php?sender_id=1&recipient_id=999&last_id=${lastMessageId}`)
+        .then(response => response.json())
+        .then(messages => {
+            messages.forEach(message => {
+                if (message.id > lastMessageId) { // Ensure only new messages are appended
+                    appendMessage(
+                        message.message,
+                        message.sender_id === 1 
+                    );
+                    lastMessageId = message.id; // Update lastMessageId
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching messages:', error));
+}
+
+// Event listeners for sending messages
+sendBtn.addEventListener('click', sendMessage);
+messageInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
     }
 });
 
-// Allow pressing "Enter" to send the message
-messageInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        sendBtn.click();
-    }
-});
+// Real-time polling for new messages every 2 seconds
+setInterval(fetchMessages, 2000);

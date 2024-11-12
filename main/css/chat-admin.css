@@ -77,17 +77,6 @@ body {
 }
 
 .user-message {
-    background-color: #007bff;
-    color: white;
-    border-radius: 12px;
-    padding: 10px 15px;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: 0;
-    border: #2b2b2b solid 2px;
-}
-
-.admin-message {
     background-color: #e0e0e0;
     color: #333;
     border-radius: 12px;
@@ -95,5 +84,18 @@ body {
     max-width: 75%;
     margin-right: auto;
     margin-left: 0;
+    margin-bottom: 10px;
+    border: #2b2b2b solid 2px;
+}   
+
+.admin-message {
+    background-color: #007bff;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 15px;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: 0;
+    margin-bottom: 10px;
     border: #2b2b2b solid 2px;
 }
