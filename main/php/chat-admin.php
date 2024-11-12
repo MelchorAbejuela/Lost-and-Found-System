@@ -8,9 +8,11 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h2 id="chat-header">Admin Chat</h2>
+            <img src="../img/user.png" alt="user">
+            <h2 id="chat-header">User</h2>
+            <div class="user-status">is Online... </div>
         </div>
-    
+
         <!-- Chat Area -->
         <div class="chat-box" id="chat-box">
             <!-- Messages will appear here -->
@@ -23,91 +25,97 @@
     </div>
 
     <script>
-    const sender_id = 999; // Set admin ID
-    const recipient_id = 1; // Set user ID
-    let lastMessageId = 0; // Track the last message ID loaded
-    let isSendingMessage = false; // Flag to prevent double sending
+        const sender_id = 999; // Set admin ID
+        const recipient_id = 1; // Set user ID
+        let lastMessageId = 0; // Track the last message ID loaded
+        let isSendingMessage = false; // Flag to prevent double sending
 
-    // Function to send message
-    function sendMessage() {
-        if (isSendingMessage) return; // Prevent sending multiple messages simultaneously
-        isSendingMessage = true;
+        // Function to send message
+        function sendMessage() {
+            if (isSendingMessage) return; // Prevent sending multiple messages simultaneously
+            isSendingMessage = true;
 
-        const message = document.getElementById("message-input").value;
-        if (message.trim() === "") {
-            isSendingMessage = false; // Reset flag if the message is empty
-            return; // Prevent sending empty messages
-        }
-
-        // Disable the send button temporarily
-        const sendButton = document.getElementById("send-btn");
-        sendButton.disabled = true;
-
-        fetch("send-message.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `sender_id=${sender_id}&recipient_id=${recipient_id}&message=${message}&role=admin`,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                document.getElementById("message-input").value = ''; // Clear input
-                loadMessages(); // Refresh chat
-            } else {
-                alert(data.message);
+            const message = document.getElementById("message-input").value;
+            if (message.trim() === "") {
+                isSendingMessage = false; // Reset flag if the message is empty
+                return; // Prevent sending empty messages
             }
 
-            // Re-enable the send button
-            sendButton.disabled = false;
-            isSendingMessage = false; // Reset flag
-        });
-    }
+            // Disable the send button temporarily
+            const sendButton = document.getElementById("send-btn");
+            sendButton.disabled = true;
 
-    // Listen for Enter key press to send the message
-    document.getElementById("message-input").addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            sendMessage(); // Call sendMessage when Enter is pressed
-        }
-    });
-
-    // Function to load messages, only adds new ones
-    function loadMessages() {
-        fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
+            fetch("send-message.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `sender_id=${sender_id}&recipient_id=${recipient_id}&message=${message}&role=admin`,
+            })
             .then(response => response.json())
-            .then(messages => {
-                const chatBox = document.getElementById("chat-box");
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById("message-input").value = ''; // Clear input
+                    loadMessages(); // Refresh chat
+                } else {
+                    alert(data.message);
+                }
 
-                // Append each new message
-                let newMessagesAdded = false;
-                messages.forEach(message => {
-                    const msgDiv = document.createElement("div");
-                    msgDiv.className = message.sender_id === sender_id ? 'admin-message' : 'user-message';
-                    msgDiv.textContent = message.message; // Removed "You:" and "User:" part
-                    chatBox.appendChild(msgDiv);
+                // Re-enable the send button
+                sendButton.disabled = false;
+                isSendingMessage = false; // Reset flag
+            });
+        }
 
-                    // Update the last message ID
-                    if (message.id > lastMessageId) {
-                        lastMessageId = message.id;
-                        newMessagesAdded = true;
+        // Listen for Enter key press to send the message
+        document.getElementById("message-input").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage(); // Call sendMessage when Enter is pressed
+            }
+        });
+
+        // Function to load messages, only adds new ones
+        function loadMessages() {
+            fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
+                .then(response => response.json())
+                .then(messages => {
+                    const chatBox = document.getElementById("chat-box");
+
+                    // Append each new message
+                    let newMessagesAdded = false;
+                    messages.forEach(message => {
+                        const msgDiv = document.createElement("div");
+                        msgDiv.className = "message " + (message.sender_id === sender_id ? 'admin-message' : 'user-message');
+
+                        // Create user icon (admin or user)
+                        const img = document.createElement("img");
+                        img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png'; // Replace with actual paths to icons
+                        img.alt = message.sender_id === sender_id ? 'Admin' : 'User';
+
+                        const messageDiv = document.createElement("div");
+                        messageDiv.textContent = message.message;
+
+                        msgDiv.appendChild(img);
+                        msgDiv.appendChild(messageDiv);
+                        chatBox.appendChild(msgDiv);
+
+                        // Update the last message ID
+                        if (message.id > lastMessageId) {
+                            lastMessageId = message.id;
+                            newMessagesAdded = true;
+                        }
+                    });
+
+                    // Auto-scroll to bottom only if new messages were added
+                    if (newMessagesAdded) {
+                        chatBox.scrollTop = chatBox.scrollHeight;
                     }
                 });
+        }
 
-                // Auto-scroll to bottom only if new messages were added
-                if (newMessagesAdded) {
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
-            });
-    }
-
-    // Load messages every 2 seconds without clearing previous messages
-    setInterval(loadMessages, 2000);
-    loadMessages(); // Initial load
-</script>
-
-
-
-    <script src="../script/chat.js"></script>
+        // Load messages every 2 seconds without clearing previous messages
+        setInterval(loadMessages, 2000);
+        loadMessages(); // Initial load
+    </script>
 </body>
 </html>
