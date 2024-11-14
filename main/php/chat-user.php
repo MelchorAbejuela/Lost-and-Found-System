@@ -74,44 +74,61 @@
             }
         });
 
-        // Function to load messages, only adds new ones
-        function loadMessages() {
-            fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
-                .then(response => response.json())
-                .then(messages => {
-                    const chatBox = document.getElementById("chat-box");
+       // Function to load messages with timestamps
+function loadMessages() {
+    fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
+        .then(response => response.json())
+        .then(messages => {
+            const chatBox = document.getElementById("chat-box");
 
-                    // Append each new message
-                    let newMessagesAdded = false;
-                    messages.forEach(message => {
-                        const msgDiv = document.createElement("div");
-                        msgDiv.className = "message " + (message.sender_id === sender_id ? 'user-message' : 'admin-message');
+            // Keep track of the last timestamp to avoid repeating it
+            let lastTimestamp = '';
 
-                        // Create user icon (admin or user)
-                        const img = document.createElement("img");
-                        img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png'; // Replace with actual paths to icons
-                        img.alt = message.sender_id === sender_id ? 'User' : 'Admin';
+            // Append each new message
+            let newMessagesAdded = false;
+            messages.forEach(message => {
+                // Format timestamp for display, e.g., "12:30 PM"
+                const messageTime = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                        const messageDiv = document.createElement("div");
-                        messageDiv.textContent = message.message;
+                // Insert timestamp only if it’s different from the last one
+                if (messageTime !== lastTimestamp) {
+                    const timestampDiv = document.createElement("div");
+                    timestampDiv.className = "timestamp";
+                    timestampDiv.textContent = messageTime;
+                    chatBox.appendChild(timestampDiv);
 
-                        msgDiv.appendChild(img);
-                        msgDiv.appendChild(messageDiv);
-                        chatBox.appendChild(msgDiv);
+                    lastTimestamp = messageTime; // Update last timestamp
+                }
 
-                        // Update the last message ID
-                        if (message.id > lastMessageId) {
-                            lastMessageId = message.id;
-                            newMessagesAdded = true;
-                        }
-                    });
+                const msgDiv = document.createElement("div");
+                msgDiv.className = "message " + (message.sender_id === sender_id ? 'user-message' : 'admin-message');
 
-                    // Auto-scroll to bottom only if new messages were added
-                    if (newMessagesAdded) {
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    }
-                });
-        }
+                // Create user icon (admin or user)
+                const img = document.createElement("img");
+                img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png';
+                img.alt = message.sender_id === sender_id ? 'User' : 'Admin';
+
+                const messageDiv = document.createElement("div");
+                messageDiv.textContent = message.message;
+
+                msgDiv.appendChild(img);
+                msgDiv.appendChild(messageDiv);
+                chatBox.appendChild(msgDiv);
+
+                // Update the last message ID
+                if (message.id > lastMessageId) {
+                    lastMessageId = message.id;
+                    newMessagesAdded = true;
+                }
+            });
+
+            // Auto-scroll to bottom only if new messages were added
+            if (newMessagesAdded) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+}
+
 
         // Load messages every 2 seconds without clearing previous messages
         setInterval(loadMessages, 2000);

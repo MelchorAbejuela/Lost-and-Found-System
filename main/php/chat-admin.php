@@ -29,19 +29,20 @@
         const recipient_id = 1; // Set user ID
         let lastMessageId = 0; // Track the last message ID loaded
         let isSendingMessage = false; // Flag to prevent double sending
+        let lastTimestamp = "";
+
 
         // Function to send message
         function sendMessage() {
-            if (isSendingMessage) return; // Prevent sending multiple messages simultaneously
+            if (isSendingMessage) return;
             isSendingMessage = true;
 
             const message = document.getElementById("message-input").value;
             if (message.trim() === "") {
-                isSendingMessage = false; // Reset flag if the message is empty
-                return; // Prevent sending empty messages
+                isSendingMessage = false;
+                return;
             }
 
-            // Disable the send button temporarily
             const sendButton = document.getElementById("send-btn");
             sendButton.disabled = true;
 
@@ -55,67 +56,75 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    document.getElementById("message-input").value = ''; // Clear input
-                    loadMessages(); // Refresh chat
+                    document.getElementById("message-input").value = '';
+                    loadMessages();
                 } else {
                     alert(data.message);
                 }
 
-                // Re-enable the send button
                 sendButton.disabled = false;
-                isSendingMessage = false; // Reset flag
+                isSendingMessage = false;
             });
         }
 
         // Listen for Enter key press to send the message
         document.getElementById("message-input").addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
-                sendMessage(); // Call sendMessage when Enter is pressed
+                sendMessage();
             }
         });
 
-        // Function to load messages, only adds new ones
-        function loadMessages() {
-            fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
+        // Function to load messages with timestamps
+            function loadMessages() {
+                fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
                 .then(response => response.json())
                 .then(messages => {
                     const chatBox = document.getElementById("chat-box");
-
-                    // Append each new message
                     let newMessagesAdded = false;
+
                     messages.forEach(message => {
+                        // Format timestamp for display, e.g., "12:30 PM"
+                        const messageTime = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        // Insert timestamp only if it’s different from the last one
+                        if (messageTime !== lastTimestamp) {
+                            const timestampDiv = document.createElement("div");
+                            timestampDiv.className = "timestamp";
+                            timestampDiv.textContent = messageTime;
+                            chatBox.appendChild(timestampDiv);
+
+                            lastTimestamp = messageTime; // Update last timestamp
+                        }
+
                         const msgDiv = document.createElement("div");
                         msgDiv.className = "message " + (message.sender_id === sender_id ? 'admin-message' : 'user-message');
 
-                        // Create user icon (admin or user)
                         const img = document.createElement("img");
-                        img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png'; // Replace with actual paths to icons
+                        img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png';
                         img.alt = message.sender_id === sender_id ? 'Admin' : 'User';
 
-                        const messageDiv = document.createElement("div");
-                        messageDiv.textContent = message.message;
+                        const messageContentDiv = document.createElement("div");
+                        messageContentDiv.className = "message-content";
+                        messageContentDiv.textContent = message.message;
 
                         msgDiv.appendChild(img);
-                        msgDiv.appendChild(messageDiv);
+                        msgDiv.appendChild(messageContentDiv);
                         chatBox.appendChild(msgDiv);
 
-                        // Update the last message ID
                         if (message.id > lastMessageId) {
                             lastMessageId = message.id;
                             newMessagesAdded = true;
                         }
                     });
 
-                    // Auto-scroll to bottom only if new messages were added
                     if (newMessagesAdded) {
                         chatBox.scrollTop = chatBox.scrollHeight;
                     }
                 });
         }
 
-        // Load messages every 2 seconds without clearing previous messages
         setInterval(loadMessages, 2000);
-        loadMessages(); // Initial load
+        loadMessages();
     </script>
 </body>
 </html>
