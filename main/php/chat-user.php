@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>User Chat</title>
     <link rel="stylesheet" href="../css/chat-user.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="chat-container">
@@ -13,126 +14,200 @@
             <div class="user-status">is Online...</div>
         </div>
 
-        <!-- Chat Area -->
         <div class="chat-box" id="chat-box">
-            <!-- Messages will appear here -->
         </div>
 
         <div class="input-area">
+            <button class="attach-file" id="attach-file-btn">
+                <i class="fas fa-paperclip"></i>
+            </button>
+            <span id="file-name">No file selected</span>
+            <button id="remove-file-btn" style="display: none;">X</button>
+
+            <input type="file" id="media-input" style="display: none;" accept="image/jpeg,image/png,video/mp4">
             <input type="text" id="message-input" placeholder="Type your message here...">
+            
             <button id="send-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <script>
-        const sender_id = 1; // Set user ID
-        const recipient_id = 999; // Set admin ID
-        let lastMessageId = 0; // Track the last message ID loaded
-        let isSendingMessage = false; // Flag to prevent double sending
+    const sender_id = 1;
+    const recipient_id = 999;
+    let lastMessageId = 0;
+    let isSendingMessage = false;
 
-        // Function to send message
-        function sendMessage() {
-            if (isSendingMessage) return; // Prevent sending multiple messages simultaneously
-            isSendingMessage = true;
+    // Attach File button functionality
+    document.getElementById('attach-file-btn').addEventListener('click', function() {
+        document.getElementById('media-input').click();
+    });
 
-            const message = document.getElementById("message-input").value;
-            if (message.trim() === "") {
-                isSendingMessage = false; // Reset flag if the message is empty
-                return; // Prevent sending empty messages
-            }
+    document.getElementById('media-input').addEventListener('change', function(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const fileNameSpan = document.getElementById('file-name');
+        const removeFileBtn = document.getElementById('remove-file-btn');
 
-            // Disable the send button temporarily
-            const sendButton = document.getElementById("send-btn");
-            sendButton.disabled = true;
+        if (file) {
+            fileNameSpan.textContent = file.name;
+            fileNameSpan.style.display = 'inline';
+            removeFileBtn.style.display = 'inline';
+        } else {
+            fileNameSpan.textContent = 'No file selected';
+            fileNameSpan.style.display = 'none';
+            removeFileBtn.style.display = 'none';
+        }
+    });
 
-            fetch("send-message.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: `sender_id=${sender_id}&recipient_id=${recipient_id}&message=${message}&role=user`,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    document.getElementById("message-input").value = ''; // Clear input
-                    loadMessages(); // Refresh chat
-                } else {
-                    alert(data.message);
-                }
+    document.getElementById('remove-file-btn').addEventListener('click', function() {
+        document.getElementById('media-input').value = '';
+        document.getElementById('file-name').textContent = 'No file selected';
+        document.getElementById('file-name').style.display = 'none';
+        document.getElementById('remove-file-btn').style.display = 'none';
+    });
 
-                // Re-enable the send button
-                sendButton.disabled = false;
-                isSendingMessage = false; // Reset flag
-            });
+    function sendMessage() {
+        if (isSendingMessage) return;
+        isSendingMessage = true;
+
+        const message = document.getElementById("message-input").value;
+        const mediaInput = document.getElementById("media-input");
+        const file = mediaInput.files[0];
+
+        if (message.trim() === "" && !file) {
+            isSendingMessage = false;
+            return;
         }
 
-        // Listen for Enter key press to send the message
-        document.getElementById("message-input").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                sendMessage(); // Call sendMessage when Enter is pressed
-            }
-        });
+        const sendButton = document.getElementById("send-btn");
+        sendButton.disabled = true;
 
-       // Function to load messages with timestamps
-function loadMessages() {
+        const formData = new FormData();
+        formData.append("sender_id", sender_id);
+        formData.append("recipient_id", recipient_id);
+        formData.append("message", message);
+        formData.append("role", "user");
+
+        // Changed 'media' to 'file' to match PHP expecting $_FILES['file']
+        if (file) {
+            formData.append("file", file);
+        }
+
+        fetch("send-message.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("message-input").value = '';
+                mediaInput.value = '';
+                document.getElementById('file-name').textContent = 'No file selected';
+                document.getElementById('file-name').style.display = 'none';
+                document.getElementById('remove-file-btn').style.display = 'none';
+                loadMessages();
+            } else {
+                alert(data.message || 'Error sending message');
+            }
+
+            sendButton.disabled = false;
+            isSendingMessage = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            sendButton.disabled = false;
+            isSendingMessage = false;
+            alert('Error sending message');
+        });
+    }
+
+    document.getElementById("message-input").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+
+    function loadMessages() {
     fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)
         .then(response => response.json())
         .then(messages => {
             const chatBox = document.getElementById("chat-box");
-
-            // Keep track of the last timestamp to avoid repeating it
             let lastTimestamp = '';
-
-            // Append each new message
             let newMessagesAdded = false;
+
             messages.forEach(message => {
-                // Format timestamp for display, e.g., "12:30 PM"
                 const messageTime = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                // Insert timestamp only if it’s different from the last one
                 if (messageTime !== lastTimestamp) {
                     const timestampDiv = document.createElement("div");
                     timestampDiv.className = "timestamp";
                     timestampDiv.textContent = messageTime;
                     chatBox.appendChild(timestampDiv);
-
-                    lastTimestamp = messageTime; // Update last timestamp
+                    lastTimestamp = messageTime;
                 }
 
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message " + (message.sender_id === sender_id ? 'user-message' : 'admin-message');
 
-                // Create user icon (admin or user)
                 const img = document.createElement("img");
-                img.src = message.sender_id === sender_id ? '../img/user.png' : '../img/user.png';
+                img.src = '../img/user.png';
                 img.alt = message.sender_id === sender_id ? 'User' : 'Admin';
 
-                const messageDiv = document.createElement("div");
-                messageDiv.textContent = message.message;
+                const messageContent = document.createElement("div");
+                messageContent.className = "message-content";
 
-                msgDiv.appendChild(img);
-                msgDiv.appendChild(messageDiv);
+                const textDiv = document.createElement("div");
+                textDiv.textContent = message.message;
+                messageContent.appendChild(textDiv);
+
+                if (message.file_path) {
+                    const mediaDiv = document.createElement("div");
+                    mediaDiv.className = "media-message";
+
+                    if (message.file_type.startsWith("image")) {
+                        const img = document.createElement("img");
+                        img.src = message.file_path;
+                        img.alt = "Image";
+                        mediaDiv.appendChild(img);
+                    } else if (message.file_type.startsWith("video")) {
+                        const video = document.createElement("video");
+                        video.src = message.file_path;
+                        video.controls = true;
+                        mediaDiv.appendChild(video);
+                    }
+
+                    messageContent.appendChild(mediaDiv);
+                }
+
+                // Append elements in the correct order based on message type
+                if (message.sender_id === sender_id) {
+                    msgDiv.appendChild(messageContent);
+                    msgDiv.appendChild(img);
+                } else {
+                    msgDiv.appendChild(img);
+                    msgDiv.appendChild(messageContent);
+                }
+
                 chatBox.appendChild(msgDiv);
 
-                // Update the last message ID
                 if (message.id > lastMessageId) {
                     lastMessageId = message.id;
                     newMessagesAdded = true;
                 }
             });
 
-            // Auto-scroll to bottom only if new messages were added
             if (newMessagesAdded) {
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
+        })
+        .catch(error => {
+            console.error('Error loading messages:', error);
         });
 }
 
-
-        // Load messages every 2 seconds without clearing previous messages
-        setInterval(loadMessages, 2000);
-        loadMessages(); // Initial load
+    setInterval(loadMessages, 2000);
+    loadMessages();
     </script>
+
 </body>
 </html>

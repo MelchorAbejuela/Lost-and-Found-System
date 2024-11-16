@@ -60,6 +60,7 @@ body {
     display: flex;
     background-color: #fff;
     border-top: 1px solid #ddd;
+    align-items: center;
 }
 
 .input-area input {
@@ -89,60 +90,117 @@ body {
     background-color: rgb(2, 67, 138);
 }
 
-.message {
-    margin-bottom: 10px;
+.attach-file {
+    padding: 8px;
+    background-color: #004aad;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.message img {
+.attach-file:hover {
+    background-color: rgb(2, 67, 138);
+}
+
+.attach-file i {
+    font-size: 18px;
+}
+
+.message {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    max-width: 85%;
+    gap: 8px;
+}
+
+/*User icons for each message bubble */
+.message > img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Updated media message styling */
+.media-message {
+    margin-top: 5px;
+    position: relative;
+    max-width: 100%;
+}
+
+.media-message img {
+    max-width: 400px;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.media-message video {
+    max-width: 400px;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+/* Hover effect for images */
+.media-message img:hover {
+    transform: scale(1.02);
 }
 
 /* User message styling */
 .user-message {
+    flex-direction: row;
+    margin-left: auto;
+}
+
+.user-message .message-content {
     background-color: #004aad;
     color: white;
     border-radius: 12px;
     padding: 10px 15px;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: 0;
-    margin-bottom: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
     animation: popup 0.3s ease;
 }
 
-.user-message img {
+.user-message > img {
     margin-left: 15px;
 }
 
 /* Admin message styling */
-.admin-message {
+.admin-message .message-content {
     background-color: #ddd;
     color: #333;
     border-radius: 12px;
     padding: 10px 15px;
-    max-width: 75%;
-    margin-right: auto;
-    margin-left: 0;
-    margin-bottom: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
     animation: popup 0.3s ease;
 }
 
-.admin-message img {
+
+.admin-message > img {
     margin-right: 15px;
 }
 
-/* Centered timestamp styling */
 .timestamp {
     font-size: 12px;
     color: #888;
@@ -171,6 +229,38 @@ body {
 .timestamp::after {
     right: 0;
     margin-left: 10px;
+}
+
+#file-name {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #333;
+}
+
+#remove-file-btn {
+    font-size: 14px;
+    color: red;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#remove-file-btn:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .media-message img,
+    .media-message video {
+        max-width: 300px;
+        max-height: 450px;
+    }
 }
 
 @keyframes popup {

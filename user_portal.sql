@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2024 at 01:34 PM
+-- Generation Time: Nov 16, 2024 at 03:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,6 +43,22 @@ INSERT INTO `admins` (`id`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `media`
+--
+
+CREATE TABLE `media` (
+  `id` int(11) NOT NULL,
+  `message_id` int(11) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_type` varchar(50) NOT NULL,
+  `file_size` int(11) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
@@ -59,8 +75,10 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `timestamp`) VALUES
-(129, 1, 999, 'hello po pede po patulong?', '2024-11-12 12:34:25'),
-(130, 999, 1, 'ano yon', '2024-11-12 12:34:28');
+(213, 1, 999, 'hello', '2024-11-16 14:04:57'),
+(214, 1, 999, 'asd', '2024-11-16 14:05:31'),
+(215, 1, 999, '', '2024-11-16 14:06:41'),
+(216, 1, 999, 'hi', '2024-11-16 14:12:15');
 
 -- --------------------------------------------------------
 
@@ -75,6 +93,13 @@ CREATE TABLE `registration` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `registration`
+--
+
+INSERT INTO `registration` (`id`, `email`, `password`) VALUES
+(1, 'wala@gmail.com', 'asd1234');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -84,6 +109,12 @@ CREATE TABLE `registration` (
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `media`
+--
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `messages`
@@ -108,16 +139,22 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `media`
+--
+ALTER TABLE `media`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
