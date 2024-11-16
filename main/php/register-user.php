@@ -4,42 +4,46 @@ require './DBcon.php';
 if (isset($_POST["submit"])) {
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $confirmpassword = $_POST["confirmpassword"]; 
+    $confirmpassword = $_POST["confirmpassword"];
 
-    $duplicate = mysqli_query($conn, "SELECT * FROM registration WHERE email = '$email'");
+    // Check for duplicate email
+    $stmt = $conn->prepare("SELECT * FROM registration WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (!$duplicate) {
-        die("Query failed: " . mysqli_error($conn));
-    }
-
-    if (mysqli_num_rows($duplicate) > 0) {
-        echo "<script> alert (' Email has already taken'); </script>";
+    if ($result->num_rows > 0) {
+        echo "<script> alert('Email has already been taken'); </script>";
     } else {
-        if ($password == $confirmpassword) {
-            $query = "INSERT INTO tb_user (, email, password) VALUES ( '$email', '$password')";
+        if ($password === $confirmpassword) {
+            // Insert plain-text password into the database
+            $stmt = $conn->prepare("INSERT INTO registration (email, password) VALUES (?, ?)");
+            $stmt->bind_param("ss", $email, $password);
 
-            if (mysqli_query($conn, $query)) {
-                echo "<script> alert ('Register Successful'); window.location.href = 'index.php';  </script>";
+            if ($stmt->execute()) {
+                echo "<script> alert('Registration Successful'); window.location.href = 'login-user.php'; </script>";
             } else {
-                echo "<script> alert ('Error: " . mysqli_error($conn) . "'); </script>";
+                echo "<script> alert('Error: " . $stmt->error . "'); </script>";
             }
         } else {
-            echo "<script> alert ('Password does not match'); </script>";
+            echo "<script> alert('Password does not match'); </script>";
         }
     }
 }
 ?>
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/register-user.css">
   <title>OCC Lost and Found System</title>
 </head>
-
 <body>
   <nav class="navbar">
     <div class="left-side">
@@ -52,7 +56,6 @@ if (isset($_POST["submit"])) {
   </nav>
 
   <div class="main">
-
     <div class="lost-found-theme">
       <img src="../img/lost-found-theme.png" alt="">
     </div>
@@ -64,14 +67,12 @@ if (isset($_POST["submit"])) {
         <form class="login" action="register-user.php" method="POST">
           <input type="email" name="email" placeholder="Email" required>
           <input type="password" name="password" placeholder="Password" required>
-          <input type="password" name="password" placeholder="Comfirm password">
+          <input type="password" name="confirmpassword" placeholder="Confirm Password" required>
           <button type="submit" name="submit" class="button">Register</button>
         </form>
-        <p>Already have account?<a href="login-user.php">Sign in here.</a></p>
+        <p>Already have an account? <a href="login-user.php">Sign in here.</a></p>
       </div>
     </div>
-
   </div>
 </body>
-
 </html>
