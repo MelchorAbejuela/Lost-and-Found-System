@@ -33,7 +33,6 @@
             <div class="search-bar">
                 <input type="text" placeholder="Search items"><img src="../img/search-icon.png" alt="">
             </div>
-            <a href="">Report a missing item?</a>
         </div>
 
         <div class="missing-items-container">
@@ -64,65 +63,6 @@
                     </div>
                 </div>
 
-                <!-- second item -->
-                <div class="all-items-container-row">
-                    <div class="specific-item-container">
-                        <div class="content-1"><img src="" alt=""></div>
-                        <p class="content-2">2024/11/08 - 7:11 AM</p>
-                        <p class="content-3">Melchor Abejuela</p>
-                        <p class="content-4">Front of One Arena</p>
-                    </div>
-
-                    <div class="claim-message">
-                        <button>Claim</button>
-                        <img src="../img/message-icon.png" alt="" class="button-but-image">
-                    </div>
-                </div>
-
-                <!-- third item -->
-                <div class="all-items-container-row">
-                    <div class="specific-item-container">
-                        <div class="content-1"><img src="" alt=""></div>
-                        <p class="content-2">2024/11/08 - 7:11 AM</p>
-                        <p class="content-3">Melchor Abejuela</p>
-                        <p class="content-4">Front of One Arena</p>
-                    </div>
-
-                    <div class="claim-message">
-                        <button>Claim</button>
-                        <img src="../img/message-icon.png" alt="" class="button-but-image">
-                    </div>
-                </div>
-
-                <!-- fourth item -->
-                <div class="all-items-container-row">
-                    <div class="specific-item-container">
-                        <div class="content-1"><img src="" alt=""></div>
-                        <p class="content-2">2024/11/08 - 7:11 AM</p>
-                        <p class="content-3">Melchor Abejuela</p>
-                        <p class="content-4">Front of One Arena</p>
-                    </div>
-
-                    <div class="claim-message">
-                        <button>Claim</button>
-                        <img src="../img/message-icon.png" alt="" class="button-but-image">
-                    </div>
-                </div>
-
-                <!-- fifth item -->
-                <div class="all-items-container-row">
-                    <div class="specific-item-container">
-                        <div class="content-1"><img src="" alt=""></div>
-                        <p class="content-2">2024/11/08 - 7:11 AM</p>
-                        <p class="content-3">Melchor Abejuela</p>
-                        <p class="content-4">Front of One Arena</p>
-                    </div>
-
-                    <div class="claim-message">
-                        <button>Claim</button>
-                        <img src="../img/message-icon.png" alt="" class="button-but-image">
-                    </div>
-                </div>
             </div>
         </div>
     </div>

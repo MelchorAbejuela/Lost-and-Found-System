@@ -57,6 +57,7 @@
 
 .occ-background {
     filter: blur(5px);
+    width: 100vw;
 }
 
 .welcome-text {
