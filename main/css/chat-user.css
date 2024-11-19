@@ -95,16 +95,26 @@ body {
     background-color: #004aad;
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 50%; /* This will ensure it stays circular by default */
     cursor: pointer;
     margin-right: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all 0.3s ease;
+    width: 35px; /* Fixed width to maintain circular shape */
+    height: 35px; /* Fixed height to maintain circular shape */
+}
+
+.attach-file.has-file {
+    border-radius: 25px 0 0 25px;
+    padding: 8px 12px;
+    width: auto; /* Allow width to expand when file is selected */
+    height: auto; /* Allow height to adjust when file is selected */
 }
 
 .attach-file:hover {
-    background-color: rgb(2, 67, 138);
+    background-color: rgb(4, 56, 112);
 }
 
 .attach-file i {
@@ -232,20 +242,35 @@ body {
 }
 
 #file-name {
+    display: none;
     font-size: 14px;
-    margin-left: 10px;
-    color: #333;
+    color: white;
+    background-color: #004aad;
+    padding: 9.5px 12px;
+    border-radius: 0 25px 25px 0;
+    margin-left: -5px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    animation: slideIn 0.5s ease;
 }
 
 #remove-file-btn {
-    font-size: 14px;
-    color: red;
-    margin-left: 5px;
+    display: none;
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    margin-left: 8px;
+    padding: 0 8px;
+    animation: fadeIn 0.3s ease;
 }
 
 #remove-file-btn:hover {
-    text-decoration: underline;
+    color: #ff4444;
 }
 
 /* Responsive adjustments for smaller screens */
@@ -260,6 +285,26 @@ body {
     .media-message video {
         max-width: 300px;
         max-height: 450px;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 

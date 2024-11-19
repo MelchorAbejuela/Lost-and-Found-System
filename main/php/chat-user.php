@@ -21,7 +21,7 @@
             <button class="attach-file" id="attach-file-btn">
                 <i class="fas fa-paperclip"></i>
             </button>
-            <span id="file-name">No file selected</span>
+            <span id="file-name"></span>
             <button id="remove-file-btn" style="display: none;">X</button>
 
             <input type="file" id="media-input" style="display: none;" accept="image/jpeg,image/png,video/mp4">
@@ -37,9 +37,8 @@
     let lastMessageId = 0;
     let isSendingMessage = false;
 
-    // Attach File button functionality
     document.getElementById('attach-file-btn').addEventListener('click', function() {
-        document.getElementById('media-input').click();
+    document.getElementById('media-input').click();
     });
 
     document.getElementById('media-input').addEventListener('change', function(event) {
@@ -47,85 +46,101 @@
         const file = fileInput.files[0];
         const fileNameSpan = document.getElementById('file-name');
         const removeFileBtn = document.getElementById('remove-file-btn');
+        const attachBtn = document.getElementById('attach-file-btn');
 
         if (file) {
+            attachBtn.classList.add('has-file');
             fileNameSpan.textContent = file.name;
-            fileNameSpan.style.display = 'inline';
-            removeFileBtn.style.display = 'inline';
+            fileNameSpan.style.display = 'inline-block';
+            removeFileBtn.style.display = 'inline-block';
         } else {
-            fileNameSpan.textContent = 'No file selected';
+            attachBtn.classList.remove('has-file');
+            fileNameSpan.textContent = '';
             fileNameSpan.style.display = 'none';
             removeFileBtn.style.display = 'none';
         }
     });
 
-    document.getElementById('remove-file-btn').addEventListener('click', function() {
-        document.getElementById('media-input').value = '';
-        document.getElementById('file-name').textContent = 'No file selected';
-        document.getElementById('file-name').style.display = 'none';
-        document.getElementById('remove-file-btn').style.display = 'none';
+    document.getElementById('remove-file-btn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent any default button behavior
+        const attachBtn = document.getElementById('attach-file-btn');
+        const mediaInput = document.getElementById('media-input');
+        const fileNameSpan = document.getElementById('file-name');
+        
+        mediaInput.value = '';
+        attachBtn.classList.remove('has-file');
+        fileNameSpan.textContent = '';
+        fileNameSpan.style.display = 'none';
+        this.style.display = 'none';
     });
 
-    function sendMessage() {
-        if (isSendingMessage) return;
-        isSendingMessage = true;
+    // Modified sendMessage function
+function sendMessage() {
+    if (isSendingMessage) return;
+    isSendingMessage = true;
 
-        const message = document.getElementById("message-input").value;
-        const mediaInput = document.getElementById("media-input");
-        const file = mediaInput.files[0];
+    const message = document.getElementById("message-input").value;
+    const mediaInput = document.getElementById("media-input");
+    const file = mediaInput.files[0];
+    const attachBtn = document.getElementById('attach-file-btn');
+    const fileNameSpan = document.getElementById('file-name');
+    const removeFileBtn = document.getElementById('remove-file-btn');
 
-        if (message.trim() === "" && !file) {
-            isSendingMessage = false;
-            return;
-        }
-
-        const sendButton = document.getElementById("send-btn");
-        sendButton.disabled = true;
-
-        const formData = new FormData();
-        formData.append("sender_id", sender_id);
-        formData.append("recipient_id", recipient_id);
-        formData.append("message", message);
-        formData.append("role", "user");
-
-        // Changed 'media' to 'file' to match PHP expecting $_FILES['file']
-        if (file) {
-            formData.append("file", file);
-        }
-
-        fetch("send-message.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                document.getElementById("message-input").value = '';
-                mediaInput.value = '';
-                document.getElementById('file-name').textContent = 'No file selected';
-                document.getElementById('file-name').style.display = 'none';
-                document.getElementById('remove-file-btn').style.display = 'none';
-                loadMessages();
-            } else {
-                alert(data.message || 'Error sending message');
-            }
-
-            sendButton.disabled = false;
-            isSendingMessage = false;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            sendButton.disabled = false;
-            isSendingMessage = false;
-            alert('Error sending message');
-        });
+    if (message.trim() === "" && !file) {
+        isSendingMessage = false;
+        return;
     }
 
-    document.getElementById("message-input").addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            sendMessage();
+    const sendButton = document.getElementById("send-btn");
+    sendButton.disabled = true;
+
+    const formData = new FormData();
+    formData.append("sender_id", sender_id);
+    formData.append("recipient_id", recipient_id);
+    formData.append("message", message);
+    formData.append("role", "user");
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    fetch("send-message.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            document.getElementById("message-input").value = '';
+            mediaInput.value = '';
+            
+            // Reset attachment button styles
+            attachBtn.classList.remove('has-file');
+            fileNameSpan.style.display = 'none';
+            fileNameSpan.textContent = '';
+            removeFileBtn.style.display = 'none';
+            
+            loadMessages();
+        } else {
+            alert(data.message || 'Error sending message');
         }
+
+        sendButton.disabled = false;
+        isSendingMessage = false;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        sendButton.disabled = false;
+        isSendingMessage = false;
+        alert('Error sending message');
     });
+}
+
+document.getElementById("message-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
 
     function loadMessages() {
     fetch(`load-messages.php?sender_id=${sender_id}&recipient_id=${recipient_id}&last_id=${lastMessageId}`)

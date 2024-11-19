@@ -1,5 +1,4 @@
-/* styles.css */
-
+/* chat-admin.css */
 * {
     margin: 0;
     padding: 0;
@@ -61,15 +60,20 @@ body {
     display: flex;
     background-color: #fff;
     border-top: 1px solid #ddd;
+    align-items: center;
 }
 
 .input-area input {
     flex: 1;
     padding: 10px;
-    border: 2px solid #2b2b2b;
+    border: 2px solid #004aad;
     border-radius: 25px;
     margin-right: 10px;
     font-size: 12px;
+}
+
+.input-area input:hover {
+    border: 2px solid #ffbd59;
 }
 
 .input-area button {
@@ -83,61 +87,124 @@ body {
 }
 
 .input-area button:hover {
-    background-color: rgb(2, 67, 138);
+    background-color: #5b5b5b;
+}
+
+.attach-file {
+    padding: 8px;
+    background-color: #004aad;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    width: 35px;
+    height: 35px;
+}
+
+.attach-file.has-file {
+    border-radius: 25px 0 0 25px;
+    padding: 8px 12px;
+    width: auto;
+    height: auto;
+}
+
+.attach-file:hover {
+    background-color: rgb(44, 44, 44);
+}
+
+.attach-file i {
+    font-size: 18px;
 }
 
 .message {
     margin-bottom: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    max-width: 85%;
+    gap: 8px;
 }
 
-.message img {
-    width: 30px; /* Adjusted the size of the icon */
-    height: 30px; /* Adjusted the size of the icon */
+.message > img {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-}
-
-.user-message {
-    background-color: #ddd;
-    color: #333;
-    border-radius: 12px;
-    padding: 10px 15px;
-    max-width: 75%;
-    margin-right: auto;
-    margin-left: 0;
-    margin-bottom: 10px;
+    flex-shrink: 0;
+    margin-top: 7px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    animation: popup 0.3s ease;
 }
 
-.user-message img {
-    margin-right: 15px;
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.media-message {
+    margin-top: 5px;
+    position: relative;
+    max-width: 100%;
+}
+
+.media-message img {
+    max-width: 400px;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.media-message video {
+    max-width: 400px;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.media-message img:hover {
+    transform: scale(1.02);
 }
 
 .admin-message {
+    flex-direction: row-reverse;
+    margin-left: auto;
+}
+
+.admin-message .message-content {
     background-color: #2b2b2b;
     color: white;
     border-radius: 12px;
     padding: 10px 15px;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: 0;
-    margin-bottom: 10px;
-    flex-direction: row-reverse;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     animation: popup 0.3s ease;
 }
 
-.admin-message img {
+.admin-message > img {
     margin-left: 15px;
 }
 
-/* Centered timestamp styling */
+.user-message .message-content {
+    background-color: #ddd;
+    color: #333;
+    border-radius: 12px;
+    padding: 10px 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: popup 0.3s ease;
+}
+
+.user-message > img {
+    margin-right: 15px;
+}
+
 .timestamp {
     font-size: 12px;
     color: #888;
@@ -168,7 +235,72 @@ body {
     margin-left: 10px;
 }
 
-/* Animation for messages */
+#file-name {
+    display: none;
+    font-size: 14px;
+    color: white;
+    background-color: #2b2b2b;
+    padding: 9.5px 12px;
+    border-radius: 0 25px 25px 0;
+    margin-left: -5px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    animation: slideIn 0.5s ease;
+}
+
+#remove-file-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 0 8px;
+    animation: fadeIn 0.3s ease;
+}
+
+#remove-file-btn:hover {
+    color: #ff4444;
+}
+
+@media screen and (max-width: 768px) {
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .media-message img,
+    .media-message video {
+        max-width: 300px;
+        max-height: 450px;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 @keyframes popup {
     0% {
         transform: scale(0.8);
