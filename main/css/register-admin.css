@@ -43,6 +43,7 @@
     transition: ease 0.3s;
     border: none;
     text-decoration: none;
+    color: black;
 }
 
 .right-side a:hover {
