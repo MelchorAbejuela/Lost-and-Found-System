@@ -32,18 +32,16 @@ if (isset($_POST["submit"])) {
 }
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/register-user.css">
   <title>OCC Lost and Found System</title>
 </head>
+
 <body>
   <nav class="navbar">
     <div class="left-side">
@@ -51,18 +49,18 @@ if (isset($_POST["submit"])) {
       <h1>Lost and Found System</h1>
     </div>
     <div class="right-side">
-      <h1>Register as User</h1>
+      <a href="">Register as Admin</a>
     </div>
   </nav>
 
   <div class="main">
     <div class="lost-found-theme">
-      <img src="../img/lost-found-theme.png" alt="">
+      <img src="../img/landing-page-image.png" alt="">
     </div>
 
     <div class="login-container">
       <div class="first-block">
-        <img src="../img/avatar-female.png" alt="">
+        <img src="../img/user.png" alt="">
         <h1>User</h1>
         <form class="login" action="register-user.php" method="POST">
           <input type="email" name="email" placeholder="Email" required>
@@ -73,6 +71,8 @@ if (isset($_POST["submit"])) {
         <p>Already have an account? <a href="login-user.php">Sign in here.</a></p>
       </div>
     </div>
+
   </div>
 </body>
+
 </html>

@@ -9,7 +9,7 @@
 
 .navbar {
   width: 100%;
-  background-color: #004aad;
+  background: linear-gradient(90deg, #004aad, #0064c8);
   position: fixed;
   top: 0;
   height: 15vh;
@@ -33,6 +33,21 @@
   margin-right: 5%;
 }
 
+.right-side a {
+  padding-block: 10px;
+  padding-inline: 15px;
+  text-decoration: none;
+  color: #004aad;
+  font-weight: bolder;
+  border-radius: 20px;
+  background-color: white;
+  transition: ease 0.2s;
+}
+
+.right-side a:hover {
+  opacity: 0.9;
+}
+
 .navbar img {
   width: 70px;
   height: 70px;
@@ -54,8 +69,9 @@
   width: 100%; 
   position: relative;
   top: 15vh;
-  background-color: rgb(130, 201, 211);
+  background-color: #f2f8fc;
   gap: 2rem; 
+  position: fixed;
 }
 
 .login-container {
@@ -65,32 +81,33 @@
   align-items: center;
   width: 40%; 
   max-width: 400px;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .first-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
   padding: 2rem;
-  background: linear-gradient(145deg, #a0c4df, #5e8fb8);
+  background-color: #FFFFFF;
   border-radius: 8px;
 }
 
 .first-block h1 {
-  margin-block: 1rem;
+  margin-top: 1rem;
   font-size: 1.8rem;
+  color: rgb(3, 42, 75);
+  font-weight: 600;
 }
 
 .first-block img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-top: 1rem;
   object-fit: contain;
-  border: 1px solid black;
+  border: 1px solid #B0BEC5;
 }
 
 .login {
@@ -104,13 +121,14 @@
 .login input {
   width: 100%;
   padding: 10px;
-  border: none;
+  border: 1px solid #B0BEC5; 
   border-radius: 5px;
+  background-color: #F7F9FA; 
 }
 
 .button {
   padding: 10px;
-  background: linear-gradient(145deg, #1c6aa8, #0a558c);
+  background: linear-gradient(145deg, rgb(3, 42, 75), rgb(15, 70, 100));
   color: white;
   border: none;
   border-radius: 5px;
@@ -120,22 +138,27 @@
 }
 
 .button:hover {
-  background: linear-gradient(145deg, #0a558c, #1c6aa8);
+  opacity: 0.9;
 }
 
 .first-block p {
   margin-top: 1rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
+}
+
+.first-block a {
+  color: rgb(15, 70, 100);
 }
 
 .lost-found-theme {
-  width: 40%; 
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .lost-found-theme img {
