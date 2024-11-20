@@ -66,14 +66,14 @@ body {
 .input-area input {
     flex: 1;
     padding: 10px;
-    border: 2px solid #004aad;
+    border: 2px solid #2b2b2b;
     border-radius: 25px;
     margin-right: 10px;
     font-size: 12px;
 }
 
 .input-area input:hover {
-    border: 2px solid #ffbd59;
+    border: 2px solid #2b2b2b;
 }
 
 .input-area button {
@@ -175,7 +175,6 @@ body {
 }
 
 .admin-message {
-    flex-direction: row-reverse;
     margin-left: auto;
 }
 
@@ -258,7 +257,7 @@ body {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 8px;
+    margin-right: 8px;
     padding: 0 8px;
     animation: fadeIn 0.3s ease;
 }
