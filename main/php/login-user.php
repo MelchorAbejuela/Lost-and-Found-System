@@ -55,7 +55,7 @@ if (isset($_POST["submit"])) {
           <h1>Lost and Found System</h1>
         </div>
         <div class="right-side">
-          <a href="./login-admin.php">Login as Admin</a>
+          <a href="login-admin.php">Login as Admin</a>
         </div>
       </nav>
 

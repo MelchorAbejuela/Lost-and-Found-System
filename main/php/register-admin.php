@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1>Lost and Found System</h1>
         </div>
         <div class="right-side">
-            <a href="./register-user.php">Register as User</a>
+            <a href="register-user.php">Register as User</a>
         </div>
     </nav>
 

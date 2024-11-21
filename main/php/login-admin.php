@@ -53,11 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1>Lost and Found System</h1>
         </div>
         <div class="right-side">
-            <a href="./login-user.php">Login as User</a>
+            <a href="login-user.php">Login as User</a>
         </div>
     </nav>
 
     <div class="main">
+
+        <div class="lost-found-theme">
+            <video src="../img/logo-vid.mp4" autoplay loop muted></video>
+        </div>
+
         <div class="login-container">
             <div class="first-block">
                 <img src="../img/user.png" alt="">
