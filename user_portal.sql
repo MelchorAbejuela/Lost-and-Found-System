@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2024 at 03:12 PM
+-- Generation Time: Nov 21, 2024 at 02:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,21 +24,52 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
+-- Table structure for table `admin_login`
 --
 
-CREATE TABLE `admins` (
+CREATE TABLE `admin_login` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_registration`
+--
+
+CREATE TABLE `admin_registration` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admins`
+-- Dumping data for table `admin_registration`
 --
 
-INSERT INTO `admins` (`id`, `username`, `password`) VALUES
+INSERT INTO `admin_registration` (`id`, `username`, `password`) VALUES
 (1, 'admin_123', 'admin12345');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `login_users`
+--
+
+CREATE TABLE `login_users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `login_users`
+--
+
+INSERT INTO `login_users` (`id`, `email`, `password`) VALUES
+(1, 'laguidao@gmail123', 'laguidao');
 
 -- --------------------------------------------------------
 
@@ -87,9 +118,9 @@ INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `timestamp
 --
 
 CREATE TABLE `registration` (
-  `id` int(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -97,18 +128,34 @@ CREATE TABLE `registration` (
 --
 
 INSERT INTO `registration` (`id`, `email`, `password`) VALUES
-(1, 'wala@gmail.com', 'asd1234');
+(2, 'melcor@gmail.com', 'melchor'),
+(3, 'laguidao@gmail', 'laguidao'),
+(4, 'laguidao@gmail123', 'laguidao');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admins`
+-- Indexes for table `admin_login`
 --
-ALTER TABLE `admins`
+ALTER TABLE `admin_login`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `admin_registration`
+--
+ALTER TABLE `admin_registration`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `login_users`
+--
+ALTER TABLE `login_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `media`
@@ -126,16 +173,29 @@ ALTER TABLE `messages`
 -- Indexes for table `registration`
 --
 ALTER TABLE `registration`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `admins`
+-- AUTO_INCREMENT for table `admin_login`
 --
-ALTER TABLE `admins`
+ALTER TABLE `admin_login`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `admin_registration`
+--
+ALTER TABLE `admin_registration`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `login_users`
+--
+ALTER TABLE `login_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -154,7 +214,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

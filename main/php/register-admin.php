@@ -1,5 +1,5 @@
 <?php 
-require './DBcon.php';
+require 'DBcon.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["admin"];
@@ -30,8 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    $stmt->close();
-    $conn->close();
+   
 }
 ?>
 
@@ -52,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <nav class="navbar">
         <div class="left-side">
-            <img src="" alt="">
+            <img src="../img/LAF-LOGO.png" alt="">
             <h1>Lost and Found System</h1>
         </div>
         <div class="right-side">
@@ -63,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="main">
 
         <div class="lost-found-theme">
-            <video src="../img/logo-vid.mp4" autoplay loop muted></video>
+            <video src="../img/LAF-LOGO.mp4" autoplay loop muted></video>
         </div>
 
         <div class="login-container">
@@ -71,12 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="../img/user.png" alt="">
                 <h1>Admin</h1>
                 <form class="login" action="login-admin.php" method="POST">
-                    <input type="text" name="admin" placeholder="Admin" required>
+                    <input type="text" name="admin" placeholder="Admin Username" required>
                     <input type="password" name="password" placeholder="Password" required>
                     <input type="password" name="comfirnpassword" placeholder="Confirm Password" required>
                     <button type="submit" class="button">Login</button>
                 </form>
-                <p>Already have an account? <a href="login-admin.php">Sign in here.</a></p>
+                <p>Already have an account? <a id="login-link" href="login-admin.php">Sign in here.</a></p>
             </div>
         </div>
 

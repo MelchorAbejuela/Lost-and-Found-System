@@ -1,6 +1,6 @@
 <?php
 session_start();
-require './DBcon.php';
+require 'DBcon.php';
 
 if (isset($_POST["submit"])) {
     $email = $_POST["email"];
