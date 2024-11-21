@@ -1,69 +1,76 @@
-<!-- <?php
-require './DBcon.php'; // Adjust the path as needed
+<?php
+session_start();
+require './DBcon.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["admin"];
     $password = $_POST["password"];
 
-    // Query to check for the admin credentials
-    $query = "SELECT * FROM admins WHERE username = '$username'";
-    $result = mysqli_query($conn, $query);
-    $admin = mysqli_fetch_assoc($result);
+    // Query the admin_registration table for admin credentials
+    $stmt = $conn->prepare("SELECT * FROM admin_registration WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    // Verify password
-    if ($admin && $admin["password"] == $password) {
-        // Start session and redirect to admin dashboard
-        session_start();
-        $_SESSION["admin_login"] = true;
-        header("Location: admin-dashboard.php");
+    if ($row = $result->fetch_assoc()) {
+        if ($password === $row["password"]) {
+            $_SESSION["admin_login"] = true;
+            $_SESSION["id"] = $row["id"];
+            
+            // Redirect to admin dashboard
+            echo "<script>
+                    alert('Login successful! Redirecting to admin dashboard...');
+                    window.location.href = 'admin-dashboard.php';
+                  </script>";
+        } else {
+            echo "<script>alert('Incorrect password.'); window.history.back();</script>";
+        }
     } else {
-        echo "<script>alert('Incorrect Username or Password');</script>";
+        echo "<script>alert('Admin not registered.'); window.history.back();</script>";
     }
+
+    $stmt->close();
+    $conn->close();
 }
-?> -->
+?>
+
 
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/login-admin.css">
-  <title>OCC Lost and Found System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login-admin.css">
+    <title>Admin Login</title>
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="left-side">
-      <img src="" alt="">
-      <h1>Lost and Found System</h1>
-    </div>
-    <div class="right-side">
-      <a href="./login-user.html">Login as User</a>
-    </div>
-  </nav>
+    <nav class="navbar">
+        <div class="left-side">
+            <img src="" alt="">
+            <h1>Lost and Found System</h1>
+        </div>
+        <div class="right-side">
+            <a href="./login-user.php">Login as User</a>
+        </div>
+    </nav>
 
-  <div class="main">
-
-    <div class="login-container">
-      <div class="first-block">
-        <img src="../img/user.png" alt="">
-        <h1>Admin</h1>
-        <form class="login" action="login-admin.php" method="GET">
-          <input type="text" name="admin" placeholder="Admin" required>
-          <input type="password" name="password" placeholder="Password" required>
-          <button type="submit" class="button">Login</button>
-        </form>
-        <p>No account yet? <a href="register-admin.html">Register here.</a></p>
-      </div>
+    <div class="main">
+        <div class="login-container">
+            <div class="first-block">
+                <img src="../img/user.png" alt="">
+                <h1>Admin</h1>
+                <form class="login" action="login-admin.php" method="POST">
+                    <input type="text" name="admin" placeholder="Admin Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="button">Login</button>
+                </form>
+                <p>No account yet? <a href="register-admin.php">Register here.</a></p>
+            </div>
+        </div>
     </div>
-
-    <div class="lost-found-theme">
-      <video src="../img/logo-vid.mp4" autoplay loop muted></video>
-    </div>
-
-  </div>
 </body>
 
 </html>
