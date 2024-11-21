@@ -9,7 +9,7 @@
 
 .navbar {
   width: 100%;
-  background: linear-gradient(90deg, #004aad, #0064c8);
+  background-color: #03294B;
   position: fixed;
   top: 0;
   height: 15vh;
@@ -37,10 +37,10 @@
   padding-block: 10px;
   padding-inline: 15px;
   text-decoration: none;
-  color: #004aad;
+  color: #03294B;
   font-weight: bolder;
   border-radius: 20px;
-  background-color: white;
+  background-color: whitesmoke;
   transition: ease 0.2s;
 }
 
@@ -52,7 +52,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50px;
-  border: 1px solid white;
+  border: 2px solid whitesmoke;
 }
 
 .navbar h1 {
@@ -88,7 +88,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
   padding: 2rem;
   background-color: #FFFFFF;
@@ -98,7 +98,7 @@
 .first-block h1 {
   margin-top: 1rem;
   font-size: 1.8rem;
-  color: rgb(3, 42, 75);
+  color: #03294B;
   font-weight: 600;
 }
 
@@ -124,14 +124,15 @@
   border: 1px solid #B0BEC5; 
   border-radius: 5px;
   background-color: #F7F9FA; 
+  font-size: 12px;
 }
 
 .button {
-  padding: 10px;
-  background: linear-gradient(145deg, rgb(3, 42, 75), rgb(15, 70, 100));
-  color: white;
+  padding: 12px;
+  background-color: #03294B;
+  color: whitesmoke;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   font-size: 1.2rem;
   transition: background 0.3s ease;
@@ -148,7 +149,7 @@
 }
 
 .first-block a {
-  color: rgb(15, 70, 100);
+  color: #03294B;
 }
 
 .lost-found-theme {
@@ -156,7 +157,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   overflow: hidden;
 }

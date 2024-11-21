@@ -57,7 +57,7 @@ if (isset($_POST["submit"])) {
 <body>
   <nav class="navbar">
     <div class="left-side">
-      <img src="" alt="">
+      <img src="../img/LAF-LOGO-2.png" alt="">
       <h1>Lost and Found System</h1>
     </div>
     <div class="right-side">
