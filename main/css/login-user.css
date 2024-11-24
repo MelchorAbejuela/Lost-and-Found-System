@@ -170,3 +170,49 @@
     object-fit: contain;
   }
   
+  .password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px !important;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #03294B;
+    transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #0056b3;
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+}
+
+.password-toggle.show-password .eye-icon {
+    color: #0056b3;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.password-container input:focus + .password-toggle .eye-icon {
+    color: #0056b3;
+}

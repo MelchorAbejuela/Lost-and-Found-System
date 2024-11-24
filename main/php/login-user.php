@@ -72,11 +72,20 @@ if (isset($_POST["submit"])) {
             <div class="first-block">
                 <img src="../img/user.png" alt="">
                 <h1>User</h1>
-                <form class="login" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <button type="submit" name="submit" class="button">Login</button>
-                </form>
+        <form class="login" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+          <input type="email" name="email" placeholder="Email" required>
+            <div class="password-container">
+              <input type="password" name="password" placeholder="Password" required>
+                <span class="password-toggle" onclick="togglePassword(this)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+              </span>
+            </div>
+          <button type="submit" name="submit" class="button">Login</button>
+        </form>
+
                 <p>No account yet? <a href="register-user.php">Register here.</a></p>
             </div>
         </div>
@@ -87,3 +96,12 @@ if (isset($_POST["submit"])) {
     </div>
 </body>
 </html>
+
+<script>
+function togglePassword(element) {
+    const passwordInput = element.previousElementSibling;
+    const type = passwordInput.getAttribute('type');
+    passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
+    element.classList.toggle('show-password');
+}
+</script>
