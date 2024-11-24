@@ -73,7 +73,7 @@ if (isset($_POST["submit"])) {
     <div class="login-container">
       <div class="first-block">
         <img src="../img/user.png" alt="">
-        <h1>User</h1>
+        <h1>User Register</h1>
 
         <form class="login" action="register-user.php" method="POST">
           <input type="email" name="email" placeholder="Email" required>
