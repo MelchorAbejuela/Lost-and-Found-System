@@ -1,8 +1,9 @@
 <?php
-// Ensure the session is started and database connection is included.
+
 session_start();
-include('DBcon.php'); // Assuming DB connection is in DBcon.php
+include('DBcon.php'); 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <link href="../css/admin-portal.css" rel="stylesheet"> <!-- External CSS -->
+    <link href="../css/admin-portal.css" rel="stylesheet">
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -61,7 +62,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     <!-- Dashboard Actions -->
     <div class="dashboard-actions">
         <div class="dashboard-filters">
-            <!-- Add any filters here if needed -->
+            
         </div>
         <button class="add-item-btn" data-bs-toggle="modal" data-bs-target="#addItemModal">
             <i class="fas fa-plus"></i>
@@ -161,7 +162,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     <!-- Table Wrapper -->
     <div style="max-height: 500px; overflow-y: auto;">
         <table class="table table-striped">
-            <!-- Your existing table content -->
+            <!-- Existing table content -->
         </table>
     </div>
 </div>
@@ -293,7 +294,6 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
 </div>
 
 <!-- Modal for claiming an item -->
-<!-- Modal -->
 <div class="modal fade" id="claimModal" tabindex="-1" aria-labelledby="claimModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -315,7 +315,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     </div>
 </div>
 
-<!-- Add this modal for image preview -->
+<!-- modal for image preview -->
 <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

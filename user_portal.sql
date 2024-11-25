@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 04:03 AM
+-- Generation Time: Nov 25, 2024 at 04:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,6 +53,7 @@ CREATE TABLE `lost_items` (
   `category` varchar(255) NOT NULL,
   `timestamp_found` datetime NOT NULL,
   `reported_by` varchar(255) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
   `time_claimed` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -72,14 +73,6 @@ CREATE TABLE `media` (
   `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `media`
---
-
-INSERT INTO `media` (`id`, `message_id`, `file_name`, `file_type`, `file_size`, `file_path`, `uploaded_at`) VALUES
-(4, 218, 'bg.jpg', 'image/jpeg', 64332, 'uploads/67435710880aa_bg.jpg', '2024-11-24 16:40:48'),
-(5, 219, 'bg.jpg', 'image/jpeg', 64332, 'uploads/67435716ae9d1_bg.jpg', '2024-11-24 16:40:54');
-
 -- --------------------------------------------------------
 
 --
@@ -94,19 +87,6 @@ CREATE TABLE `messages` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `read_status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `timestamp`, `read_status`) VALUES
-(213, 1, 999, 'hello', '2024-11-16 14:04:57', 0),
-(214, 1, 999, 'asd', '2024-11-16 14:05:31', 0),
-(215, 1, 999, '', '2024-11-16 14:06:41', 0),
-(216, 1, 999, 'hi', '2024-11-16 14:12:15', 0),
-(217, 999, 1, 'hi po', '2024-11-24 16:40:33', 0),
-(218, 999, 1, '', '2024-11-24 16:40:48', 0),
-(219, 1, 999, '', '2024-11-24 16:40:54', 0);
 
 -- --------------------------------------------------------
 
@@ -181,7 +161,7 @@ ALTER TABLE `admin_registration`
 -- AUTO_INCREMENT for table `lost_items`
 --
 ALTER TABLE `lost_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `media`
@@ -193,7 +173,7 @@ ALTER TABLE `media`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 
 --
 -- AUTO_INCREMENT for table `registration`
