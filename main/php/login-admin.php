@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Redirect to admin dashboard
             echo "<script>
                     alert('Login successful! Redirecting to admin dashboard...');
-                    window.location.href = 'admin-portal.html';
+                    window.location.href = 'admin-portal.php';
                   </script>";
         } else {
             echo "<script>alert('Incorrect password.'); window.history.back();</script>";
