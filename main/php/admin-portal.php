@@ -12,6 +12,9 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link href="../css/admin-portal.css" rel="stylesheet"> <!-- External CSS -->
 </head>
 <body>
@@ -45,44 +48,120 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     <!-- Content Area -->
     <div class="content-area">
         <!-- Dashboard Tab (CRUD Table) -->
-    <div id="dashboard" class="tab-content">
+    <!-- Dashboard Tab -->
+<div id="dashboard" class="tab-content">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h3>
+            <i class="fas fa-tachometer-alt"></i>
+            Dashboard
+        </h3>
+    </div>
+    
+    <!-- Dashboard Actions -->
+    <div class="dashboard-actions">
+        <div class="dashboard-filters">
+            <!-- Add any filters here if needed -->
+        </div>
+        <button class="add-item-btn" data-bs-toggle="modal" data-bs-target="#addItemModal">
+            <i class="fas fa-plus"></i>
+            Add Lost Item
+        </button>
+    </div>
 
-    <h3>Dashboard</h3>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Lost Item</button>
-    <!-- Table Wrapper for scrollbars -->
+    <!-- Dashboard Stats -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h4>Total Items</h4>
+            <p class="stat-value">
+                <?php
+                    $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM lost_items");
+                    $row = mysqli_fetch_assoc($result);
+                    echo $row['total'];
+                ?>
+            </p>
+        </div>
+        <div class="stat-card">
+            <h4>Unclaimed Items</h4>
+            <p class="stat-value">
+                <?php
+                    $result = mysqli_query($conn, "SELECT COUNT(*) as unclaimed FROM lost_items WHERE time_claimed IS NULL");
+                    $row = mysqli_fetch_assoc($result);
+                    echo $row['unclaimed'];
+                ?>
+            </p>
+        </div>
+        <div class="stat-card">
+            <h4>Items Claimed Today</h4>
+            <p class="stat-value">
+                <?php
+                    $result = mysqli_query($conn, "SELECT COUNT(*) as claimed_today FROM lost_items WHERE DATE(time_claimed) = CURDATE()");
+                    $row = mysqli_fetch_assoc($result);
+                    echo $row['claimed_today'];
+                ?>
+            </p>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+<div class="table-responsive" style="max-height: 500px; overflow-y: auto; margin-top: 2rem;">
+    <div class="dashboard-header" style="margin-bottom: 1rem;">
+        <h3>
+            <i class="fas fa-list"></i>
+            Recent Lost Items
+        </h3>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Items</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Timestamp Found</th>
+                <th>Reported By</th>
+                <th>Time Claimed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $result = mysqli_query($conn, "SELECT * FROM lost_items WHERE time_claimed IS NULL OR time_claimed = ''");
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>
+                    <td>
+                        <a href='" . $row['image_path'] . "' target='_blank'>
+                            <img src='" . $row['image_path'] . "' alt='Item Image' style='max-width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease;' onmouseover='this.style.transform=\"scale(1.1)\"' onmouseout='this.style.transform=\"scale(1)\"'>
+                        </a>
+                    </td>
+                    <td>" . $row['item_name'] . "</td>
+                    <td>" . $row['category'] . "</td>
+                    <td>" . $row['timestamp_found'] . "</td>
+                    <td>" . $row['reported_by'] . "</td>
+                    <td>" . ($row['time_claimed'] ? $row['time_claimed'] : 'Not Claimed') . "</td>
+                    <td>
+                        <div class='btn-group' role='group'>
+                            <button type='button' class='btn btn-info btn-sm'
+                                data-bs-toggle='modal'
+                                data-bs-target='#claimModal'
+                                data-id='" . $row['id'] . "'>
+                                <i class='fas fa-check-circle'></i>
+                            </button>
+                            <button type='button' class='btn btn-success btn-sm'>
+                                <i class='fas fa-edit'></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+    <!-- Table Wrapper -->
     <div style="max-height: 500px; overflow-y: auto;">
         <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Lost Item</th>
-                    <th>Item Name</th>
-                    <th>Category</th>
-                    <th>Timestamp Found</th>
-                    <th>Reported By</th>
-                    <th>Time Claimed</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-                <tbody>
-                    <?php
-                    // Displaying lost items data
-                    $result = mysqli_query($conn, "SELECT * FROM lost_items WHERE time_claimed IS NULL OR time_claimed = ''");
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>
-                            <td><img src='" . $row['image_path'] . "' alt='Item Image' style='max-width: 100px; height: auto;'></td>
-                            <td>" . $row['item_name'] . "</td>
-                            <td>" . $row['category'] . "</td>
-                            <td>" . $row['timestamp_found'] . "</td>
-                            <td>" . $row['reported_by'] . "</td>
-                            <td>" . $row['time_claimed'] . "</td>
-                            <td>
-                                <a href='edit-item.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Edit</a>
-                                <button class='btn btn-success btn-sm' data-bs-toggle='modal' data-bs-target='#claimModal' data-id='" . $row['id'] . "'>Claim</button>
-                            </td>
-                        </tr>";
-                    }
-                    ?>
-                 </tbody>
+            <!-- Your existing table content -->
         </table>
     </div>
 </div>
@@ -182,7 +261,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addItemModalLabel">Add Lost Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="btn-exit" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="add-item.php" method="POST" enctype="multipart/form-data">
@@ -220,7 +299,7 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="claimModalLabel">Claim Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="btn-exit" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="claimForm" action="claim-item.php" method="POST">
@@ -236,6 +315,20 @@ include('DBcon.php'); // Assuming DB connection is in DBcon.php
     </div>
 </div>
 
+<!-- Add this modal for image preview -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" id="btn-exit" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="previewImage" src="" alt="Preview" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

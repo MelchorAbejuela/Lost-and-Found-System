@@ -35,5 +35,17 @@ $(document).ready(function() {
         });
     });
 
-
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('.table img');
+        const previewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+        const previewImage = document.getElementById('previewImage');
+    
+        images.forEach(img => {
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                previewImage.src = this.src;
+                previewModal.show();
+            });
+        });
+    });
 
