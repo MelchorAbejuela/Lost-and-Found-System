@@ -1,36 +1,46 @@
-<?php
-session_start();
-require 'DBcon.php';
+<?php 
+session_start(); 
+require 'DBcon.php';  
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["admin"];
-    $password = $_POST["password"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {     
+    $username = $_POST["admin"];     
+    $password = $_POST["password"];      
 
-    // Query the admin_registration table for admin credentials
-    $stmt = $conn->prepare("SELECT * FROM admin_registration WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Query the admin_registration table for admin credentials     
+    $stmt = $conn->prepare("SELECT * FROM admin_registration WHERE username = ?");     
+    $stmt->bind_param("s", $username);     
+    $stmt->execute();     
+    $result = $stmt->get_result();      
 
-    if ($row = $result->fetch_assoc()) {
-        if ($password === $row["password"]) {
-            $_SESSION["admin_login"] = true;
-            $_SESSION["id"] = $row["id"];
+    if ($row = $result->fetch_assoc()) {         
+        if ($password === $row["password"]) {             
+            $_SESSION["admin_login"] = true;             
+            $_SESSION["id"] = $row["id"];                          
             
-            // Redirect to admin dashboard
-            echo "<script>
-                    alert('Login successful! Redirecting to admin dashboard...');
-                    window.location.href = 'admin-portal.php';
-                  </script>";
-        } else {
-            echo "<script>alert('Incorrect password.'); window.history.back();</script>";
-        }
-    } else {
-        echo "<script>alert('Admin not registered.'); window.history.back();</script>";
-    }
+            // Redirect to admin dashboard             
+            header("Location: admin-portal.php");
+            exit();         
+        } else {             
+            $_SESSION['error'] = 'Incorrect password.';
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();         
+        }     
+    } else {         
+        $_SESSION['error'] = 'Admin not registered.';
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit();     
+    }      
 
-    $stmt->close();
-    $conn->close();
+    $stmt->close();     
+    $conn->close(); 
+} 
+
+?>
+
+<?php 
+if(isset($_SESSION['error'])) {
+    echo "<div class='error'>" . $_SESSION['error'] . "</div>";
+    unset($_SESSION['error']);
 }
 ?>
 

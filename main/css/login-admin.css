@@ -163,8 +163,8 @@
     align-items: center;
     border-radius: 50%;
     overflow: hidden;
-    height: 58.5%;
-    width: 25%;
+    height: 58%;
+    width: 23.5%;
     background-color: #2b2b2b;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5); 
 }

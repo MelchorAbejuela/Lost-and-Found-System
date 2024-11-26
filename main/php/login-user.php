@@ -1,49 +1,68 @@
-<?php 
-session_start(); 
-require 'DBcon.php';
+<?php  
+session_start();  
+require 'DBcon.php';  
 
-if (isset($_POST["submit"])) {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    
-    // First check the registration table
-    $stmt = $conn->prepare("SELECT * FROM registration WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        // User found in registration table
-        $row = $result->fetch_assoc();
-        $_SESSION["login"] = true;
-        $_SESSION["id"] = $row["id"];
+if (isset($_POST["submit"])) {     
+    $email = $_POST["email"];     
+    $password = $_POST["password"];          
+
+    // First check the registration table     
+    $stmt = $conn->prepare("SELECT * FROM registration WHERE email = ? AND password = ?");     
+    $stmt->bind_param("ss", $email, $password);     
+    $stmt->execute();     
+    $result = $stmt->get_result();          
+
+    if ($result->num_rows > 0) {         
+        // User found in registration table         
+        $row = $result->fetch_assoc();         
+        $_SESSION["login"] = true;         
+        $_SESSION["id"] = $row["id"];                  
+
+        // Also ensure user exists in login_users table         
+        $check_login = $conn->prepare("SELECT * FROM registration WHERE email = ?");         
+        $check_login->bind_param("s", $email);         
+        $check_login->execute();         
+        $login_result = $check_login->get_result();                  
+
+        if ($login_result->num_rows == 0) {             
+            // If user doesn't exist in login_users, add them             
+            $insert = $conn->prepare("INSERT INTO login_users (email, password) VALUES (?, ?)");             
+            $insert->bind_param("ss", $email, $password);             
+            $insert->execute();             
+            $insert->close();         
+        }         
+        $check_login->close();                  
+
+        // Set success message in session
+        $_SESSION['success'] = 'Login successful! Redirecting to your portal...';
         
-        // Also ensure user exists in login_users table
-        $check_login = $conn->prepare("SELECT * FROM login_users WHERE email = ?");
-        $check_login->bind_param("s", $email);
-        $check_login->execute();
-        $login_result = $check_login->get_result();
+        // Redirect to user portal
+        header("Location: user-portal.php");
+        exit();     
+    } else {         
+        // Set error message in session
+        $_SESSION['error'] = 'Invalid email or password.';
         
-        if ($login_result->num_rows == 0) {
-            // If user doesn't exist in login_users, add them
-            $insert = $conn->prepare("INSERT INTO login_users (email, password) VALUES (?, ?)");
-            $insert->bind_param("ss", $email, $password);
-            $insert->execute();
-            $insert->close();
-        }
-        $check_login->close();
-        
-        echo "<script>
-                alert('Login successful! Redirecting to your portal...');
-                window.location.href = 'user-portal.php';
-              </script>";
-        exit();
-    } else {
-        echo "<script>alert('Invalid email or password.');</script>";
-    }
-    
-    $stmt->close();
-    $conn->close();
+        // Redirect back to login page
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit();     
+    }          
+
+    $stmt->close();     
+    $conn->close(); 
+} 
+
+?>
+
+<?php 
+if(isset($_SESSION['success'])) {
+    echo "<div class='success'>" . $_SESSION['success'] . "</div>";
+    unset($_SESSION['success']);
+}
+
+if(isset($_SESSION['error'])) {
+    echo "<div class='error'>" . $_SESSION['error'] . "</div>";
+    unset($_SESSION['error']);
 }
 ?>
 

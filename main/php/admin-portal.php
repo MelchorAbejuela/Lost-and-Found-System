@@ -86,7 +86,7 @@ include('DBcon.php');
             <h4>Unclaimed Items</h4>
             <p class="stat-value">
                 <?php
-                    $result = mysqli_query($conn, "SELECT COUNT(*) as unclaimed FROM lost_items WHERE time_claimed IS NULL");
+                    $result = mysqli_query($conn, "SELECT COUNT(*) as unclaimed FROM lost_items WHERE status = 'unclaimed'");
                     $row = mysqli_fetch_assoc($result);
                     echo $row['unclaimed'];
                 ?>
@@ -124,9 +124,9 @@ include('DBcon.php');
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+            <tbody>
             <?php
-            $result = mysqli_query($conn, "SELECT * FROM lost_items WHERE time_claimed IS NULL OR time_claimed = ''");
+            $result = mysqli_query($conn, "SELECT * FROM lost_items WHERE status = 'unclaimed'");
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                     <td>
@@ -138,7 +138,7 @@ include('DBcon.php');
                     <td>" . $row['category'] . "</td>
                     <td>" . $row['timestamp_found'] . "</td>
                     <td>" . $row['reported_by'] . "</td>
-                    <td>" . ($row['time_claimed'] ? $row['time_claimed'] : 'Not Claimed') . "</td>
+                    <td>Unclaimed</td>
                     <td>
                         <div class='btn-group' role='group'>
                             <button type='button' class='btn btn-info btn-sm'
@@ -247,7 +247,7 @@ include('DBcon.php');
                         <td>" . $row['category'] . "</td>
                         <td>" . $row['timestamp_found'] . "</td>
                         <td>" . $row['reported_by'] . "</td>
-                        <td>" . $row['time_claimed'] . "</td>
+                        <td>" . ($row['status'] == 'claimed' ? 'Claimed' : 'Unclaimed') . "</td>
                     </tr>";
                 }
                 ?>
@@ -329,7 +329,6 @@ include('DBcon.php');
         </div>
     </div>
 </div>
-
 
 
     <!-- Bootstrap 5 JS, Popper, and jQuery -->

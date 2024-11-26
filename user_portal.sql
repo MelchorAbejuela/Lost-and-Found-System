@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 04:42 PM
+-- Generation Time: Nov 26, 2024 at 01:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,6 +57,13 @@ CREATE TABLE `lost_items` (
   `time_claimed` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `lost_items`
+--
+
+INSERT INTO `lost_items` (`id`, `item_name`, `category`, `timestamp_found`, `reported_by`, `image_path`, `time_claimed`) VALUES
+(32, 'zj', 'human', '2024-11-08 22:15:00', 'ced', 'uploads/Jimmy santos-Jimmy santos MMK- Jimmy santos eatbulga-Jimmy santos show.jpg', '2024-11-26 08:18:00');
+
 -- --------------------------------------------------------
 
 --
@@ -72,6 +79,13 @@ CREATE TABLE `media` (
   `file_path` varchar(255) NOT NULL,
   `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `media`
+--
+
+INSERT INTO `media` (`id`, `message_id`, `file_name`, `file_type`, `file_size`, `file_path`, `uploaded_at`) VALUES
+(6, 226, 'WIN_20241126_08_11_58_Pro.jpg', 'image/jpeg', 130645, 'uploads/6745125c70880_WIN_20241126_08_11_58_Pro.jpg', '2024-11-26 00:12:12');
 
 -- --------------------------------------------------------
 
@@ -108,7 +122,8 @@ INSERT INTO `registration` (`id`, `email`, `password`) VALUES
 (2, 'melcor@gmail.com', 'melchor'),
 (3, 'laguidao@gmail', 'laguidao'),
 (4, 'laguidao@gmail123', 'laguidao'),
-(5, 'user@gmail.com', 'user12345');
+(5, 'user@gmail.com', 'user12345'),
+(6, 'labaco@gmail.com', 'labaco');
 
 --
 -- Indexes for dumped tables
@@ -161,27 +176,31 @@ ALTER TABLE `admin_registration`
 -- AUTO_INCREMENT for table `lost_items`
 --
 ALTER TABLE `lost_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+ALTER TABLE `lost_items` 
+ADD COLUMN `status` ENUM('unclaimed', 'claimed') NOT NULL DEFAULT 'unclaimed';

@@ -87,18 +87,21 @@
         $(document).ready(function () {
     // Function to fetch items
     function fetchUserItems(searchQuery = '') {
-        $.ajax({
-            url: "fetch-items.php",
-            type: "GET",
-            data: { search: searchQuery },
-            success: function (response) {
-                $("#userLostItemsTable").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error("Error fetching items:", error);
-            }
-        });
-    }
+    $.ajax({
+        url: "fetch-items.php",
+        type: "GET",
+        data: { 
+            search: searchQuery,
+            status: 'unclaimed'  // Only fetch unclaimed items
+        },
+        success: function (response) {
+            $("#userLostItemsTable").html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching items:", error);
+        }
+    });
+}
 
      // Function to handle image preview
      $(document).ready(function() {
