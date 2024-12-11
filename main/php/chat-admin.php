@@ -7,15 +7,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+<div class="main-container">
+        <!-- Sidebar -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <div class="admin-profile">
+                    <img src="../img/user.png" alt="Admin">
+                    <span>Admin Portal</span>
+                </div>
+                <button class="back-button" onclick="window.location.href='admin-portal.php'">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="user-list">
+                <!-- Single active user -->
+                <div class="user-chat active">
+                    <img src="../img/user.png" alt="User">
+                    <div class="user-info">
+                        <h4>Current User</h4>
+                        <p>Click to view conversation</p>
+                    </div>
+                    <span class="last-message-time">Now</span>
+                </div>
+            </div>
+        </div>
+
     <div class="chat-container">
         <div class="chat-header">
             <img src="../img/user.png" alt="user">
             <h2 id="chat-header">User</h2>
             <div class="user-status">is Online...</div>
+
         </div>
 
         <div class="chat-box" id="chat-box">
         </div>
+
+
+        <div class="quick-replies">
+            <button class="quick-reply-btn" data-message="Thank you for reporting your lost item. Could you please provide more details about when and where you last saw it?">Request Details</button>
+            <button class="quick-reply-btn" data-message="Good news! We've found an item matching your description. Please visit the lost and found office during business hours (9 AM - 5 PM) to identify and claim your item.">Item Found</button>
+            <button class="quick-reply-btn" data-message="I've logged your lost item in our system. We'll notify you immediately if it's turned in to lost and found.">Log Confirmation</button>
+            <button class="quick-reply-btn" data-message="For security purposes, could you please provide a detailed description of the item including any identifying marks or features?">Request Description</button>
+        </div>
+
 
         <div class="input-area">
             <button class="attach-file" id="attach-file-btn">
@@ -29,7 +64,7 @@
             <button id="send-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
-
+</div>
     <script>
         const sender_id = 999;
         const recipient_id = 1;
@@ -37,6 +72,67 @@
         let isSendingMessage = false;
         let lastTimestamp = "";
 
+         // Quick reply functionality
+         document.querySelectorAll('.quick-reply-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const messageInput = document.getElementById('message-input');
+                messageInput.value = this.dataset.message;
+                messageInput.focus();
+            });
+        });
+
+        // Chat suggestions based on user input
+        const chatSuggestions = {
+            'lost': [
+                'When did you last see your item?',
+                'Could you describe the item in detail?',
+                'What location did you last have the item?'
+            ],
+            'found': [
+                'Thank you for finding this item. Where did you find it?',
+                'Could you please bring the item to the lost and found office?',
+                'Can you describe the condition of the item?'
+            ],
+            'where': [
+                'Our lost and found office is located at [Location]. Opening hours are 9 AM - 5 PM.',
+                'You can claim your item at our main office during business hours.',
+                'Please bring identification when claiming your item.'
+            ]
+        };
+
+        document.getElementById('message-input').addEventListener('input', function(e) {
+            const input = e.target.value.toLowerCase();
+            let suggestions = [];
+
+            Object.keys(chatSuggestions).forEach(key => {
+                if (input.includes(key)) {
+                    suggestions = suggestions.concat(chatSuggestions[key]);
+                }
+            });
+
+            // Remove existing suggestions
+            const existingSuggestions = document.querySelector('.suggestions');
+            if (existingSuggestions) {
+                existingSuggestions.remove();
+            }
+
+            if (suggestions.length > 0) {
+                const suggestionsDiv = document.createElement('div');
+                suggestionsDiv.className = 'suggestions';
+                suggestions.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.className = 'suggestion-item';
+                    suggestionItem.textContent = suggestion;
+                    suggestionItem.addEventListener('click', () => {
+                        e.target.value = suggestion;
+                        suggestionsDiv.remove();
+                    });
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+                e.target.parentNode.insertBefore(suggestionsDiv, e.target.nextSibling);
+            }
+        });
+        
         // Attach File button functionality
     document.getElementById('attach-file-btn').addEventListener('click', function() {
     document.getElementById('media-input').click();

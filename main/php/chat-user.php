@@ -17,6 +17,13 @@
         <div class="chat-box" id="chat-box">
         </div>
 
+        <div class="quick-replies">
+            <button class="quick-reply-btn" data-message="I would like to surrender a lost item.">Surrender Lost Item</button>
+            <button class="quick-reply-btn" data-message="I am a claimant for the lost item, and I want to claim it since I saw your announcement.">Claim Lost Item</button>
+            <button class="quick-reply-btn" data-message="Could you please confirm if my lost item has been found?">Confirm Lost Item</button>
+            <button class="quick-reply-btn" data-message="I would like to know the process to pick up my lost item.">Pickup Process</button>
+        </div>
+
         <div class="input-area">
             <button class="attach-file" id="attach-file-btn">
                 <i class="fas fa-paperclip"></i>
@@ -36,6 +43,15 @@
     const recipient_id = 999;
     let lastMessageId = 0;
     let isSendingMessage = false;
+
+    // Quick reply buttons functionality
+    document.querySelectorAll('.quick-reply-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const messageInput = document.getElementById('message-input');
+            messageInput.value = this.dataset.message; 
+            messageInput.focus(); 
+        });
+    });
 
     document.getElementById('attach-file-btn').addEventListener('click', function() {
     document.getElementById('media-input').click();
