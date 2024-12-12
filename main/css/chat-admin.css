@@ -471,7 +471,23 @@ body {
     padding-left: 25px;
 }
 
+.clear-chat-button {
+    margin-left: auto;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: fadeIn 0.3s ease;
+}
 
+.clear-chat-button:hover {
+    background-color: #ff3333;
+}
 
 /* Responsive styles */
 @media screen and (max-width: 1200px) {

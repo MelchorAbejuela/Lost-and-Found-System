@@ -37,7 +37,9 @@
             <img src="../img/user.png" alt="user">
             <h2 id="chat-header">User</h2>
             <div class="user-status">is Online...</div>
-
+            <button id="clear-chat-btn" class="clear-chat-button">
+                 <i class="fas fa-trash"></i> Clear Chat
+            </button>
         </div>
 
         <div class="chat-box" id="chat-box">
@@ -320,6 +322,40 @@
 
         setInterval(loadMessages, 2000);
         loadMessages();
+        document.addEventListener('DOMContentLoaded', function() {
+    const clearChatBtn = document.getElementById('clear-chat-btn');
+    
+    if (clearChatBtn) {
+        clearChatBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear the entire chat history? This action cannot be undone.')) {
+                fetch('clear-chat.php', {
+                    method: 'POST',
+                    credentials: 'same-origin' // This ensures cookies are sent
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Log the full response
+                    if (data.status === 'success') {
+                        // Clear the chat box
+                        document.getElementById('chat-box').innerHTML = '';
+                        
+                        // Reset message tracking
+                        lastMessageId = 0;
+                        lastTimestamp = "";
+                        
+                        alert('Chat history has been cleared successfully.');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while clearing the chat.');
+                });
+            }
+        });
+    }
+});
     </script>
 </body>
 </html>
